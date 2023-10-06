@@ -25,7 +25,8 @@ The plugin automatically uses the existing user's default saved data (address, c
 
 A bővítmény lehetőséget ad arra, hogy egyszerűen és könnyedén leadjunk rendelést az admin felületen közvetlenül más  felhasználó "nevében".
 
-Fontos, hogy nem kezel fizetési folyamatokat.
+> [!IMPORTANT]
+> **Fontos, hogy nem kezel fizetési folyamatokat.**
 
 Csak a rendszerben meglévő felhasználót támogat, és egyszerre csak egy terméket adhatunk le rendelésként. (variációs terméket is lehet választani)
 
