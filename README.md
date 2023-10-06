@@ -2,6 +2,8 @@
 Easy to use internal tool for operators to place orders on behalf of others (does not handle any payment process)
 
 ## Description
+### ENG
+
 The plugin provides the ability to easily and effortlessly place orders on the admin interface directly on behalf of another user.
 > [!IMPORTANT]
 > **It's important to note that it does not handle payment processes.**
@@ -17,3 +19,23 @@ All automation runs if the order is marked as completed (for example, the user r
 Navigate to the **Auto Order** menu under the WooCommerce menu item, where you can place the order.
 
 The plugin automatically uses the existing user's default saved data (address, city, phone number, etc.) for the order.
+
+## Leírás
+### HUN
+
+A bővítmény lehetőséget ad arra, hogy egyszerűen és könnyedén leadjunk rendelést az admin felületen közvetlenül más  felhasználó "nevében".
+
+Fontos, hogy nem kezel fizetési folyamatokat.
+
+Csak a rendszerben meglévő felhasználót támogat, és egyszerre csak egy terméket adhatunk le rendelésként. (variációs terméket is lehet választani)
+
+Opcionálisan megadható a mennyiség, és státusz választás is, valamint privát megjegyzés.
+Támogatja az egyedi státuszokat is.
+
+A rendelési felületen minden esetben egy megjegyzés mutatja, ha a rendelést a pluginnal adták le.  (jobb oldali rendelési jegyezetek értesítő sáv).
+
+Minden automatizáció lefut, ha a rendelést úgy adjuk le, hogy az teljesítve van. (pl megkapja a WooCommerce membershipben beállítotott membershipet, ha az lett beállítva), továbbá az email is kimegy. 
+
+A Woocommerce menöpont alatt navigálj az Auto Order menüpontra, ahol a rendelést leadhatod.
+
+A plugin automatikusan a meglévő felhasználó alapértelmezett, már elmentett adatait kapcsolja be (cím, város, telszám, stb)
