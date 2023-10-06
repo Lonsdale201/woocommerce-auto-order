@@ -1,0 +1,33 @@
+.auto-order-form-wrapper {
+    display: block;
+    width: 100%;
+    margin: 10px 20px 0 0;
+}
+
+.auto-order-form-wrapper span.select2.select2-container.select2-container--default {
+    width: 350px !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-results__option--highlighted[data-selected] {
+    background-color: #0073aa;
+    color: #fff;
+}
+.select2-results__option--highlighted[aria-selected] {
+    background-color: #0073aa !important;
+    color: #fff !important;  
+}
+
+.auto-order-form-wrapper .form-group {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.auto-order-form-wrapper .success-message {
+    font-size: 18px;
+    color: #43A047;
+}
+
+.auto-order-form-wrapper .error-message {
+    font-size: 18px;
+    color: #D32F2F
+}
