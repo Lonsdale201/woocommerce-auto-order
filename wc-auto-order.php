@@ -59,6 +59,9 @@ class Auto_Order {
     }
 
     public function register_auto_order_menu() {
+        if ( ! current_user_can('administrator') ) {
+            return;
+        }
         add_submenu_page(
             'woocommerce',
             'Auto Order',
@@ -68,9 +71,12 @@ class Auto_Order {
             array( $this, 'auto_order_page_callback' )
         );
     }
-
+    
     public function auto_order_page_callback() {
         $message = '';  // Initialize message variable
+        if ( ! current_user_can('administrator') ) {
+            wp_die( __( 'Nincs megfelelő jogosultságod az oldal megtekintéséhez.', 'auto-order' ) );
+        }
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Handle the form submission
@@ -139,6 +145,10 @@ class Auto_Order {
 
     private function handle_order_submission() {
         $message = '';  // Initialize message variable
+        if ( ! current_user_can('administrator') ) {
+            wp_die( __( 'Nincs megfelelő jogosultságod a rendelés feldolgozásához.', 'auto-order' ) );
+        }
+
         if (!wp_verify_nonce($_POST['auto_order_nonce'], 'auto_order_nonce_action')) {
             die('Invalid request.');  // Invalid request if nonce can't be verified
         }
@@ -207,6 +217,9 @@ class Auto_Order {
     }
 
     public function search_users() {
+        if ( ! current_user_can('administrator') ) {
+            wp_die( __( 'Nincs megfelelő jogosultságod a felhasználókeresés végrehajtásához.', 'auto-order' ) );
+        }
         $search_term = $_GET['q'];
     
         $user_query = new WP_User_Query(array(
