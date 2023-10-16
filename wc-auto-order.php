@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Auto Order
 Plugin URI: https://github.com/Lonsdale201/woocommerce-auto-order
 Description: Automates order placements within WooCommerce
-Version: 1.0
+Version: 1.1
 Author: Soczó Kristóf - HelloWP!
 Author URI: https://hellowp.io/hu/
 */
@@ -131,6 +131,16 @@ class Auto_Order {
         }
 
         echo '</select><br>';
+
+        // Zero Price field
+        echo '<div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;">';
+        echo '<input type="checkbox" id="zero-price" name="zero_price" value="1" style="margin-right: 6px;">';
+        echo '<label for="zero-price" style="flex-grow: 1;">' . __('Zero Price', 'auto-order') . '</label><br>';
+        echo '</div>';
+        echo '<span style="margin-left: 0px;">' . __('Check this box to place the order at zero cost.', 'auto-order') . '</span>';
+
+
+
         echo '</div>';
         
         // send button
@@ -156,6 +166,8 @@ class Auto_Order {
         $user_id = isset($_POST['user_id']) ? sanitize_text_field($_POST['user_id']) : '';
         $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
         $order_status = isset($_POST['order_status']) ? sanitize_text_field($_POST['order_status']) : '';
+        // Check if zero price is checked
+        $zero_price = isset($_POST['zero_price']) && $_POST['zero_price'] == '1';
     
         // Ensure the user and product exist
         if ( ! get_user_by( 'id', $user_id ) || ! wc_get_product( $product_id ) ) {
@@ -206,6 +218,19 @@ class Auto_Order {
     
         // Calculate totals
         $order->calculate_totals();
+
+        if ($zero_price) {
+            $items = $order->get_items();
+            foreach ($items as $item) {
+                $item->set_subtotal(0);
+                $item->set_total(0);
+            }
+            $order->set_total( 0 );  
+            $order->set_shipping_total( 0 );  
+            $order->set_cart_tax( 0 );  
+            $order->set_shipping_tax( 0 );  
+            $order->save();  
+        }
     
         if ( $order->save() ) {
             $message = '<div class="success-message">A rendelés sikeresen leadva!</div>';
