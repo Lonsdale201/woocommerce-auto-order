@@ -45,7 +45,12 @@ A plugin automatikusan a meglévő felhasználó alapértelmezett, már elmentet
 
 HPOS: Jelenleg még nem támogatott
 
-### Changelog
+## Changelog
+
+### V 1.2
+
+* Added - New Order date field. You can now also specify the order date.
+* Tweak - In the order status field, the default status is now completed
 
 ### V 1.1
 
