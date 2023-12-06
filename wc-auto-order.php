@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce Auto Order
 Plugin URI: https://github.com/Lonsdale201/woocommerce-auto-order
 Description: Automates order placements within WooCommerce
-Version: 1.1
+Version: 1.2
 Author: Soczó Kristóf - HelloWP!
 Author URI: https://hellowp.io/hu/
 */
@@ -124,13 +124,21 @@ class Auto_Order {
         echo '<label for="order-status">' . __('Order Status:', 'auto-order') . '</label><br>';
         echo '<select id="order-status" name="order_status">';
 
+        $default_status = 'completed'; //default
         $order_statuses = wc_get_order_statuses();
         foreach ($order_statuses as $status_slug => $status_name) {
             $status_slug = str_replace('wc-', '', $status_slug);  
-            echo '<option value="' . esc_attr($status_slug) . '">' . esc_html($status_name) . '</option>';
+            $selected = ($status_slug == $default_status) ? 'selected' : '';
+            echo '<option value="' . esc_attr($status_slug) . '" ' . $selected . '>' . esc_html($status_name) . '</option>';
         }
-
+        
         echo '</select><br>';
+
+        // Date field
+        echo '<div class="form-group">';
+        echo '<label for="order-date">' . __('Rendelés Dátuma:', 'auto-order') . '</label><br>';
+        echo '<input type="date" id="order-date" name="order_date"><br>';
+        echo '</div>';
 
         // Zero Price field
         echo '<div class="form-group" style="display: flex; align-items: center; margin-bottom: 0px;">';
@@ -166,6 +174,7 @@ class Auto_Order {
         $user_id = isset($_POST['user_id']) ? sanitize_text_field($_POST['user_id']) : '';
         $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
         $order_status = isset($_POST['order_status']) ? sanitize_text_field($_POST['order_status']) : '';
+        $order_date = isset($_POST['order_date']) ? sanitize_text_field($_POST['order_date']) : '';
         // Check if zero price is checked
         $zero_price = isset($_POST['zero_price']) && $_POST['zero_price'] == '1';
     
@@ -208,6 +217,10 @@ class Auto_Order {
             $order->add_order_note( $note_text, false, true );
         }
         
+        if (!empty($order_date)) {
+            $order->set_date_created($order_date);
+        }
+
         // Add product to the order
         $order->add_product( wc_get_product( $product_id ), $quantity );
 
