@@ -47,6 +47,11 @@ HPOS: Jelenleg még nem támogatott
 
 ## Changelog
 
+### v 1.3
+
+* TWEAK - Plugin renamed
+* TWEAK - HPOS compatibility
+
 ### V 1.2
 
 * Added - New Order date field. You can now also specify the order date.
