@@ -43,7 +43,6 @@ A Woocommerce menüpont alatt navigálj az Auto Order menüpontra, ahol a rendel
 
 A plugin automatikusan a meglévő felhasználó alapértelmezett, már elmentett adatait kapcsolja be (cím, város, telszám, stb)
 
-HPOS: Jelenleg még nem támogatott
 
 ## Changelog
 
