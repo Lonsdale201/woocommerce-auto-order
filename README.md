@@ -20,7 +20,6 @@ Navigate to the **Auto Order** menu under the WooCommerce menu item, where you c
 
 The plugin automatically uses the existing user's default saved data (address, city, phone number, etc.) for the order.
 
-HPOS: Not supported yet
 
 ## Leírás
 ### HUN
