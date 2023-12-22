@@ -1,65 +1,61 @@
 <?php
 /*
-Plugin Name: WooCommerce Auto Order
+Plugin Name: HelloWP! | WooCommerce Auto Order
 Plugin URI: https://github.com/Lonsdale201/woocommerce-auto-order
 Description: Automates order placements within WooCommerce
-Version: 1.2
+Version: 1.3
 Author: Soczó Kristóf - HelloWP!
 Author URI: https://hellowp.io/hu/
 */
 
 
-if ( ! defined( 'ABSPATH' ) ) {
-    exit; 
+if (!defined('ABSPATH')) {
+    exit;
 }
-
 
 class Auto_Order {
     public function __construct() {
-        add_action( 'admin_menu', array( $this, 'register_auto_order_menu' ) );
-        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_styles' ) );
-        add_action('wp_ajax_search_users', array( $this, 'search_users' ));  
+        add_action('admin_menu', array($this, 'register_auto_order_menu'));
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts_styles'));
+        add_action('wp_ajax_search_users', array($this, 'search_users'));  
 
         $this->check_woocommerce_dependency();
 
-        if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+        if (!is_plugin_active('woocommerce/woocommerce.php')) {
             return;
         }
     }
 
     public function enqueue_scripts_styles($hook) {
-
         if ($hook != 'woocommerce_page_auto-order') {
-            return;  
+            return;
         }
 
-        wp_enqueue_script( 'auto-order-js', plugin_dir_url( __FILE__ ) . 'assets/select-fields.js', array('jquery', 'select2'), null, true );
-        wp_enqueue_style( 'auto-order-css', plugin_dir_url( __FILE__ ) . 'assets/auto-order.css' );          
+        wp_enqueue_script('auto-order-js', plugin_dir_url(__FILE__) . 'assets/select-fields.js', array('jquery', 'select2'), null, true);
+        wp_enqueue_style('auto-order-css', plugin_dir_url(__FILE__) . 'assets/auto-order.css');          
         wp_enqueue_style('woocommerce_admin_styles');
         wp_enqueue_style('select2', WC()->plugin_url() . '/assets/css/select2.css');
 
-         // Loading WooCommerce admin JavaScript files
-         wp_enqueue_script('wc-admin');
-         wp_enqueue_script('wc-enhanced-select'); 
-    
+        wp_enqueue_script('wc-admin');
+        wp_enqueue_script('wc-enhanced-select'); 
     }
 
     public function check_woocommerce_dependency() {
-        if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
-            add_action( 'admin_notices', array( $this, 'woocommerce_dependency_notice' ) );
+        if (!is_plugin_active('woocommerce/woocommerce.php')) {
+            add_action('admin_notices', array($this, 'woocommerce_dependency_notice'));
         }
     }
 
     public function woocommerce_dependency_notice() {
         ?>
         <div class="notice notice-error">
-            <p><?php _e( 'WooCommerce Auto Order plugin requires WooCommerce to be activated.', 'auto-order' ); ?></p>
+            <p><?php _e('WooCommerce Auto Order plugin requires WooCommerce to be activated.', 'auto-order'); ?></p>
         </div>
         <?php
     }
 
     public function register_auto_order_menu() {
-        if ( ! current_user_can('administrator') ) {
+        if (!current_user_can('administrator')) {
             return;
         }
         add_submenu_page(
@@ -68,7 +64,7 @@ class Auto_Order {
             'Auto Order',
             'manage_woocommerce',
             'auto-order',
-            array( $this, 'auto_order_page_callback' )
+            array($this, 'auto_order_page_callback')
         );
     }
     
@@ -136,7 +132,7 @@ class Auto_Order {
 
         // Date field
         echo '<div class="form-group">';
-        echo '<label for="order-date">' . __('Rendelés Dátuma:', 'auto-order') . '</label><br>';
+        echo '<label for="order-date">' . __('Order Date:', 'auto-order') . '</label><br>';
         echo '<input type="date" id="order-date" name="order_date"><br>';
         echo '</div>';
 
@@ -146,8 +142,6 @@ class Auto_Order {
         echo '<label for="zero-price" style="flex-grow: 1;">' . __('Zero Price', 'auto-order') . '</label><br>';
         echo '</div>';
         echo '<span style="margin-left: 0px;">' . __('Check this box to place the order at zero cost.', 'auto-order') . '</span>';
-
-
 
         echo '</div>';
         
@@ -162,14 +156,15 @@ class Auto_Order {
     }
 
     private function handle_order_submission() {
-        $message = '';  // Initialize message variable
-        if ( ! current_user_can('administrator') ) {
-            wp_die( __( 'Nincs megfelelő jogosultságod a rendelés feldolgozásához.', 'auto-order' ) );
+        $message = '';  
+        if (!current_user_can('administrator')) {
+            wp_die(__('Nincs megfelelő jogosultságod a rendelés feldolgozásához.', 'auto-order'));
         }
 
         if (!wp_verify_nonce($_POST['auto_order_nonce'], 'auto_order_nonce_action')) {
-            die('Invalid request.');  // Invalid request if nonce can't be verified
+            die('Invalid request.');
         }
+
         $product_id = isset($_POST['product_id']) ? sanitize_text_field($_POST['product_id']) : '';
         $user_id = isset($_POST['user_id']) ? sanitize_text_field($_POST['user_id']) : '';
         $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
@@ -202,48 +197,41 @@ class Auto_Order {
             'postcode'   => isset($user_meta['billing_postcode'][0]) ? $user_meta['billing_postcode'][0] : '',
             'country'    => isset($user_meta['billing_country'][0]) ? $user_meta['billing_country'][0] : ''
         );
-        // Create a new order
+
         $order = wc_create_order();
-    
-        // Set order customer
-        $order->set_customer_id( $user_id );
+        $order->set_customer_id($user_id);
+        $order->add_order_note(__('Ezt a terméket az Auto Order bővítmény által lett megrendelve.', 'auto-order'));
 
-        // Add a spec note for the order (always)
-        $order->add_order_note( __('Ezt a terméket az Auto Order bővítmény által lett megrendelve.', 'auto-order') );
-
-        // Private note adding if exist
-        if ( ! empty($_POST['private_note']) ) {
-            $note_text = 'Private Note: ' . sanitize_textarea_field( $_POST['private_note'] );
-            $order->add_order_note( $note_text, false, true );
+        if (!empty($_POST['private_note'])) {
+            $note_text = 'Private Note: ' . sanitize_textarea_field($_POST['private_note']);
+            $order->add_order_note($note_text, false, true);
         }
-        
+
         if (!empty($order_date)) {
             $order->set_date_created($order_date);
         }
 
-        // Add product to the order
-        $order->add_product( wc_get_product( $product_id ), $quantity );
-
-        $order->set_status( $order_status );
-        // Set address for billing and shipping
-        $order->set_address( $address, 'billing' );
-        $order->set_address( $address, 'shipping' );
-    
-        // Calculate totals
-        $order->calculate_totals();
+        $order->add_product(wc_get_product($product_id), $quantity);
 
         if ($zero_price) {
-            $items = $order->get_items();
-            foreach ($items as $item) {
+            foreach ($order->get_items() as $item_id => $item) {
                 $item->set_subtotal(0);
                 $item->set_total(0);
+                $order->update_item($item_id, $item);
             }
-            $order->set_total( 0 );  
-            $order->set_shipping_total( 0 );  
-            $order->set_cart_tax( 0 );  
-            $order->set_shipping_tax( 0 );  
-            $order->save();  
+            $order->set_total(0);
+            $order->set_shipping_total(0);
+            $order->set_cart_tax(0);
+            $order->set_shipping_tax(0);
         }
+
+        $order->set_status($order_status);
+        $order->set_address($address, 'billing');
+        $order->set_address($address, 'shipping');
+        $order->calculate_totals();
+
+        $order->save();
+        
     
         if ( $order->save() ) {
             $message = '<div class="success-message">A rendelés sikeresen leadva!</div>';
@@ -284,6 +272,13 @@ class Auto_Order {
 
 
 new Auto_Order();
+
+add_action('before_woocommerce_init', function(){
+    if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+    }
+});
+
 
 
 
