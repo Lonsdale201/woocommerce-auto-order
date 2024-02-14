@@ -45,6 +45,9 @@ A plugin automatikusan a meglévő felhasználó alapértelmezett, már elmentet
 
 ## Changelog
 
+### v 1.5 2024-02-14
+* TWEAK - Code Refactored
+
 ### v 1.3
 
 * TWEAK - Plugin renamed
