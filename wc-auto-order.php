@@ -1,13 +1,4 @@
 <?php
-/*
-Plugin Name: HelloWP! | WooCommerce Auto Order
-Plugin URI: https://github.com/Lonsdale201/woocommerce-auto-order
-Description: Automates order placements within WooCommerce
-Version: 1.3
-Author: Soczó Kristóf - HelloWP!
-Author URI: https://hellowp.io/hu/
-*/
-
 
 if (!defined('ABSPATH')) {
     exit;
@@ -18,13 +9,8 @@ class Auto_Order {
         add_action('admin_menu', array($this, 'register_auto_order_menu'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts_styles'));
         add_action('wp_ajax_search_users', array($this, 'search_users'));  
-
-        $this->check_woocommerce_dependency();
-
-        if (!is_plugin_active('woocommerce/woocommerce.php')) {
-            return;
-        }
     }
+    
 
     public function enqueue_scripts_styles($hook) {
         if ($hook != 'woocommerce_page_auto-order') {
@@ -40,19 +26,7 @@ class Auto_Order {
         wp_enqueue_script('wc-enhanced-select'); 
     }
 
-    public function check_woocommerce_dependency() {
-        if (!is_plugin_active('woocommerce/woocommerce.php')) {
-            add_action('admin_notices', array($this, 'woocommerce_dependency_notice'));
-        }
-    }
-
-    public function woocommerce_dependency_notice() {
-        ?>
-        <div class="notice notice-error">
-            <p><?php _e('WooCommerce Auto Order plugin requires WooCommerce to be activated.', 'auto-order'); ?></p>
-        </div>
-        <?php
-    }
+   
 
     public function register_auto_order_menu() {
         if (!current_user_can('administrator')) {
@@ -271,13 +245,7 @@ class Auto_Order {
 }
 
 
-new Auto_Order();
-
-add_action('before_woocommerce_init', function(){
-    if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-    }
-});
+// new Auto_Order();
 
 
 
