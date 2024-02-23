@@ -37,7 +37,7 @@ A bővítmény lehetőséget ad arra, hogy egyszerűen és könnyedén leadjunk 
 > [!IMPORTANT]
 > **Fontos, hogy nem kezel fizetési folyamatokat.**
 
-A rendszerben meglévő felhasználót mellett az új verziótól kezdve most már új felhasználói regisztrációt is elvégezhetsz, így a rendelést az új fiókhoz köti. A reigsztrációs mód a Wprdpress szabványa alapján a saját mehanikájával történik. Továbbra is egyszerre csak egy terméket adhatunk le rendelésként. (variációs terméket is lehet választani)
+A rendszerben meglévő felhasználót mellett az új verziótól kezdve (1.6) most már új felhasználói regisztrációt is elvégezhetsz, így a rendelést az új fiókhoz köti. A reigsztrációs mód a WordPress szabványa alapján a saját mehanikájával történik. Továbbra is egyszerre csak egy terméket adhatunk le rendelésként. (variációs terméket is lehet választani)
 
 Opcionálisan megadható a mennyiség, és státusz választás is, rendelési dátum, valamint privát és vásárlói megjegyzés.
 Támogatja az egyedi státuszokat is, továbbá nullás termékként is leadható a rendelés.
