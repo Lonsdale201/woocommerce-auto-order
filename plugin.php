@@ -3,7 +3,7 @@
 Plugin Name: HelloWP! | WooCommerce Auto Order
 Plugin URI: https://github.com/Lonsdale201/woocommerce-auto-order
 Description: Automates order placements within WooCommerce
-Version: 1.5
+Version: 1.6
 Author: Soczó Kristóf - HelloWP!
 Author URI: https://hellowp.io/hu/
 */
